@@ -1,10 +1,10 @@
 import './App.css';
-import DemoJSS from './JSS_StyledComponents/DemoJSS/DemoJSS';
+import ToDoList from './ToDoList/ToDoList';
 
 function App() {
   return (
     <div>
-      <DemoJSS />
+      <ToDoList />
     </div>
   );
 }
