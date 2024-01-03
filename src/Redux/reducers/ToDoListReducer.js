@@ -1,7 +1,6 @@
 import { ToDoListDarkTheme } from "../../Themes/ToDoListDarkTheme"
-import { ToDoListLightTheme } from "../../Themes/ToDoListLightTheme"
-import { ToDoListPrimaryTheme } from "../../Themes/ToDoListPrimaryTheme"
-import { add_task } from "../types/ToDoListTypes"
+import { add_task, change_theme } from "../types/ToDoListTypes"
+import { arrTheme } from "../../Themes/ThemeManager";
 
 const initialState = {
     themeToDoList: ToDoListDarkTheme,
@@ -18,19 +17,27 @@ export default (state = initialState, action) => {
     switch (action.type) {
         case add_task: {
             if (action.newTask.taskName.trim() === '') {
-                alert("Bạn chưa nhập Task Name");
+                alert("Bạn chưa nhập Task Name!");
                 return { ...state };
             }
             let taskListUpdate = [...state.taskList];
             let index = taskListUpdate.findIndex(task => task.taskName === action.newTask.taskName);
             if (index !== -1) {
-                alert("Task Name đã tồn tại!");
+                alert(action.newTask.taskName + " đã tồn tại!");
                 return { ...state };
             }
             state.taskList = [...taskListUpdate, action.newTask];
             return { ...state };
         }
-        
+
+        case change_theme: {
+            let theme = arrTheme.find(theme => theme.id == action.themeId);
+            if (theme) {
+                state.themeToDoList = { ...theme.theme };
+            }
+            return { ...state }
+        }
+
         default:
             return { ...state }
     }

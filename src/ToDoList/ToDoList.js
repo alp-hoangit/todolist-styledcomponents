@@ -1,16 +1,14 @@
 import React, { Component } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { Container } from '../Containers/Container';
-import { ToDoListDarkTheme } from '../Themes/ToDoListDarkTheme';
-import { ToDoListLightTheme } from '../Themes/ToDoListLightTheme';
-import { ToDoListPrimaryTheme } from '../Themes/ToDoListPrimaryTheme';
 import { Dropdown } from '../Components/Dropdown';
 import { Heading1, Heading2, Heading3, Heading4, Heading5 } from '../Components/Heading';
 import { TextField } from '../Components/TextField';
 import { Button } from '../Components/Button';
 import { Table, Th, Td, Thead, Tbody, Tr } from '../Components/Table';
 import { connect } from 'react-redux';
-import { addTaskAction } from '../Redux/actions/ToDoListActions';
+import { addTaskAction, changeTheme } from '../Redux/actions/ToDoListActions';
+import { arrTheme } from '../Themes/ThemeManager';
 
 
 class ToDoList extends Component {
@@ -50,14 +48,23 @@ class ToDoList extends Component {
         })
     }
 
+    renderTheme = () => {
+        return arrTheme.map((theme, index) => {
+            return <option key={index} value={theme.id}>{theme.name}</option>
+        })
+    }
+
+    handleChangeTheme = (e) => {
+        let themeId = e.target.value;
+        this.props.dispatch(changeTheme(themeId));
+    }
+
     render() {
         return (
             <ThemeProvider theme={this.props.themeToDoList}>
                 <Container className='w-50'>
-                    <Dropdown>
-                        <option value="">Dark Theme</option>
-                        <option value="">Light Theme</option>
-                        <option value="">Primary Theme</option>
+                    <Dropdown onChange={this.handleChangeTheme}>
+                        {this.renderTheme()}
                     </Dropdown>
                     <Heading3>To do list</Heading3>
                     <TextField onChange={this.handleChange} name="taskName" label="Task Name" className="w-50" />
